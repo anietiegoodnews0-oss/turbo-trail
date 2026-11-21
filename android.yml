@@ -58,6 +58,16 @@ jobs:
           {"appId":"com.turbotrail.racers","appName":"Turbo Trail Racers","webDir":"www"}
           JSON
           npx cap add android
+                    mkdir -p android/app/src/main/java/com/turbotrail/racers
+          cp LanRacePlugin.java MainActivity.java android/app/src/main/java/com/turbotrail/racers/
+          python3 - <<'PY2'
+          p = 'android/app/src/main/AndroidManifest.xml'
+          s = open(p, encoding='utf8').read()
+          perms = '<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/><uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/><uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>'
+          i = s.index('<application')
+          s = s[:i] + perms + s[i:]
+          open(p, 'w', encoding='utf8').write(s)
+          PY2
           sed -i 's/<activity/<activity android:screenOrientation="sensorLandscape"/' android/app/src/main/AndroidManifest.xml
           mkdir -p android/app/src/main/java/com/turbotrail/racers
           cp LanRacePlugin.java MainActivity.java android/app/src/main/java/com/turbotrail/racers/
